@@ -1,0 +1,26 @@
+name: lint
+on:
+  push:
+    branches:
+      - main  # mainブランチへのプッシュをトリガーにする
+
+permissions:
+  contents: read
+
+# INFO https://zenn.dev/spiegel/articles/20200929-using-golangci-lint-action
+jobs:
+  golangci:
+    name: lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/setup-go@v3
+        with:
+          go-version: '1.23'
+      - uses: actions/checkout@v3
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v3
+        with:
+          version: latest
+          working-directory: ./srcs
+          args: --out-format=colored-line-number
