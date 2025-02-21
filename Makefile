@@ -23,6 +23,10 @@ build:
 run: build
 	$(SRC_DIR)/$(BINARY_NAME)
 
+# ローカル環境でGoプロジェクト配下のテストを実行
+test:
+	cd $(SRC_DIR) && go test ./...
+
 # 実行バイナリとDockerイメージの削除
 clean:
 	@if [ -f $(SRC_DIR)/$(BINARY_NAME) ]; then \
