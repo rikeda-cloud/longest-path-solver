@@ -5,7 +5,7 @@ WORKDIR /app
 
 COPY ./srcs/ /app/
 RUN go mod tidy
-RUN go build -o longest-path-solver ./main.go
+RUN go build -o longest-path-solver cmd/longest-path-solver/main.go
 
 # 実行ステージ
 FROM alpine:latest AS runtime

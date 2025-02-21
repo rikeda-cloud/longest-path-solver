@@ -15,7 +15,9 @@ docker-run: docker-build
 
 # ローカル環境でのビルド(Go言語がインストール済みであることが前提)
 build:
-	cd $(SRC_DIR) && go mod tidy && go build -o $(BINARY_NAME) ./main.go
+	cd $(SRC_DIR) && \
+	go mod tidy && \
+	go build -o $(BINARY_NAME) cmd/longest-path-solver/main.go
 
 # ローカル環境でのビルド後に実行(Go言語がインストール済みであることが前提)
 run: build
