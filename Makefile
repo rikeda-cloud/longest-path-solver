@@ -25,7 +25,9 @@ run: build
 
 # ローカル環境でGoプロジェクト配下のテストを実行
 test:
-	cd $(SRC_DIR) && go test ./...
+	cd $(SRC_DIR) && \
+	go mod tidy && \
+	go test -v ./...
 
 # 実行バイナリとDockerイメージの削除
 clean:
