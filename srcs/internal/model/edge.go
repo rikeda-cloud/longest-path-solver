@@ -13,7 +13,7 @@ type Edge struct {
 }
 
 // INFO float validation is handled later with ParseFloat for accuracy.
-const edgePatternStr = `^[ ]*(\d+)[ ]*,[ ]*(\d+)[ ]*,[ ]*([\d.]+)[ ]*$`
+const edgePatternStr = `^[ ]*([+]?\d+)[ ]*,[ ]*([+]?\d+)[ ]*,[ ]*([+-]?[\d.]+)[ ]*$`
 
 var edgePattern = regexp.MustCompile(edgePatternStr)
 
