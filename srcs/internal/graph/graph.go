@@ -17,12 +17,35 @@ func NewGraph() *Graph {
 	return &Graph{adj: make(map[EdgeID][]Edge)}
 }
 
-func newGraphWithEdges(edges map[EdgeID][]Edge) *Graph {
+func NewGraphWithEdges(edges map[EdgeID][]Edge) *Graph {
 	adj := make(map[EdgeID][]Edge)
 	for key, edges := range edges {
 		adj[key] = edges
 	}
 	return &Graph{adj: adj}
+}
+
+func (g *Graph) Equal(other *Graph) bool {
+	// Compare the number of edges in both graphs
+	if len(g.adj) != len(other.adj) {
+		return false
+	}
+
+	for key, edges := range g.adj {
+		otherEdges, exists := other.adj[key]
+		// Check if the other graph has the same key and the same number of edges
+		if !exists || len(edges) != len(otherEdges) {
+			return false
+		}
+
+		// Compare the edges for each key
+		for i := range edges {
+			if edges[i] != otherEdges[i] {
+				return false
+			}
+		}
+	}
+	return true
 }
 
 func (g *Graph) AddEdge(id1, id2 EdgeID, distance float64) error {
