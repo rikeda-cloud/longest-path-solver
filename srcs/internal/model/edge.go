@@ -7,8 +7,8 @@ import (
 )
 
 type Edge struct {
-	Start    uint
-	End      uint
+	Start    EdgeID
+	End      EdgeID
 	Distance float64
 }
 
@@ -32,10 +32,12 @@ func ParseGraphEdge(line string) (*Edge, error) {
 	if errStart != nil || errEnd != nil || errDistance != nil {
 		return nil, fmt.Errorf("invalid data in line: %s", line)
 	}
-	// start and end must be positive integers (1 or greater); 0 is not included.
-	if start <= 0 || end <= 0 {
+
+	startEdgeID, errStartID := NewEdgeID(start)
+	endEdgeID, errEndID := NewEdgeID(end)
+	if errStartID != nil || errEndID != nil {
 		return nil, fmt.Errorf("start and end must be positive integers: %s", line)
 	}
 
-	return &Edge{Start: uint(start), End: uint(end), Distance: distance}, nil
+	return &Edge{Start: startEdgeID, End: endEdgeID, Distance: distance}, nil
 }
