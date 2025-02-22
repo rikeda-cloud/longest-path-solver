@@ -51,6 +51,22 @@ func TestConvertGraphInputsToGraph(t *testing.T) {
 				5: {{To: 4, Distance: 6.0}},
 			}),
 		},
+		{ // Duplicate edge from 1 to 2(should result in an error)
+			graphInputs: []*GraphInput{
+				{Start: 1, End: 2, Distance: 1.0},
+				{Start: 3, End: 4, Distance: 2.0},
+				{Start: 1, End: 2, Distance: 3.0},
+			},
+			expected: nil,
+		},
+		{ // Duplicate reverse edge from 2 to 1(should result in an error)
+			graphInputs: []*GraphInput{
+				{Start: 1, End: 2, Distance: 1.0},
+				{Start: 3, End: 4, Distance: 2.0},
+				{Start: 2, End: 1, Distance: 3.0},
+			},
+			expected: nil,
+		},
 	}
 
 	for _, test := range tests {
