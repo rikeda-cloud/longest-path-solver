@@ -1,22 +1,20 @@
-package parser
+package input
 
 import (
 	"strings"
 	"testing"
-
-	edge "github.com/rikeda-cloud/longest-path-solver/internal/model"
 )
 
-func TestParseEdges(t *testing.T) {
+func TestParseGraphInputs(t *testing.T) {
 	// INFO The input is assumed to be in the specified format.
 	// ex) "始点の ID(正の整数値), 終点の ID(正の整数値), 距離(浮動小数点数)¥r¥n"
 	tests := []struct {
 		input    string
-		expected []*edge.Edge
+		expected []*GraphInput
 	}{
 		{
 			input: "1, 2, 8.54\r\n2, 3, 3.11\r\n3, 1, 2.19\r\n3, 4, 4\r\n4, 1, 1.4\r\n",
-			expected: []*edge.Edge{
+			expected: []*GraphInput{
 				{Start: 1, End: 2, Distance: 8.54},
 				{Start: 2, End: 3, Distance: 3.11},
 				{Start: 3, End: 1, Distance: 2.19},
@@ -26,7 +24,7 @@ func TestParseEdges(t *testing.T) {
 		},
 		{
 			input: "1,2,1.0\r\n2,3,2.0\r\n3,4,3.0\r\n4,5,4.0\r\n5,6,5.0\r\n6,1,6.0\r\n",
-			expected: []*edge.Edge{
+			expected: []*GraphInput{
 				{Start: 1, End: 2, Distance: 1.0},
 				{Start: 2, End: 3, Distance: 2.0},
 				{Start: 3, End: 4, Distance: 3.0},
@@ -37,7 +35,7 @@ func TestParseEdges(t *testing.T) {
 		},
 		{
 			input: " 4 , 5 , 6 \r\n",
-			expected: []*edge.Edge{
+			expected: []*GraphInput{
 				{Start: 4, End: 5, Distance: 6.0},
 			},
 		},
@@ -50,12 +48,12 @@ func TestParseEdges(t *testing.T) {
 
 	for _, test := range tests {
 		reader := strings.NewReader(test.input)
-		result, _ := ParseEdges(reader)
+		result, _ := ParseGraphInputs(reader)
 		assertEdgesEqual(t, test.expected, result)
 	}
 }
 
-func assertEdgesEqual(t *testing.T, expected, actual []*edge.Edge) {
+func assertEdgesEqual(t *testing.T, expected, actual []*GraphInput) {
 	if expected == nil && actual == nil {
 		return // Both are nil, considered equal
 	}

@@ -1,20 +1,18 @@
-package parser
+package input
 
 import (
 	"bufio"
 	"fmt"
 	"io"
-
-	edge "github.com/rikeda-cloud/longest-path-solver/internal/model"
 )
 
-func ParseEdges(reader io.Reader) ([]*edge.Edge, error) {
-	var edges []*edge.Edge
+func ParseGraphInputs(reader io.Reader) ([]*GraphInput, error) {
+	var edges []*GraphInput
 
 	scanner := bufio.NewScanner(reader)
 	for scanner.Scan() {
 		line := scanner.Text()
-		edge, err := edge.ParseGraphEdge(line)
+		edge, err := ParseGraphInput(line)
 		if err != nil {
 			return nil, err
 		}
