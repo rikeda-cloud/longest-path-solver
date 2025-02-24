@@ -101,21 +101,40 @@ func assertEdgeIDSlice(t *testing.T, expected, actual []graph.EdgeID) {
 		return
 	}
 
+	// Check if slices match (even in reverse order)
+	revExpected := reverse(expected)
+
 	// Check for loop patterns and remove elements from the slice if necessary.
 	if isLoopPattern(expected, actual) {
 		expected = expected[:len(expected)-1]
 		actual = actual[:len(actual)-1]
-	}
-
-	// Check if slices match (even in reverse order)
-	revExpected := reverse(expected)
-	if !checkEdgeIDs(expected, actual) && !checkEdgeIDs(revExpected, actual) {
-		t.Errorf("expected: %v, actual: %v", expected, actual)
+		if !checkLoopEdgeIDs(expected, actual) && !checkLoopEdgeIDs(revExpected, actual) {
+			t.Errorf("expected: %v, actual: %v", expected, actual)
+		}
+	} else {
+		if !checkEdgeIDs(expected, actual) && !checkEdgeIDs(revExpected, actual) {
+			t.Errorf("expected: %v, actual: %v", expected, actual)
+		}
 	}
 }
 
 func checkEdgeIDs(expected, actual []graph.EdgeID) bool {
-	baseIdx := findBaseIndex(expected, actual)
+	for i := 0; i < len(expected); i++ {
+		if expected[i] != actual[i] {
+			return false
+		}
+	}
+	return true
+}
+
+func checkLoopEdgeIDs(expected, actual []graph.EdgeID) bool {
+	baseIdx := -1
+	for i, val := range actual {
+		if expected[0] == val {
+			baseIdx = i
+			break
+		}
+	}
 	if baseIdx == -1 {
 		return false
 	}
@@ -126,15 +145,6 @@ func checkEdgeIDs(expected, actual []graph.EdgeID) bool {
 		}
 	}
 	return true
-}
-
-func findBaseIndex(expected, actual []graph.EdgeID) int {
-	for i, val := range actual {
-		if expected[0] == val {
-			return i
-		}
-	}
-	return -1
 }
 
 func isLoopPattern(expected, actual []graph.EdgeID) bool {
