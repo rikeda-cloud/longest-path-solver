@@ -29,6 +29,12 @@ test:
 	go mod tidy && \
 	go test -v ./...
 
+# ベンチマークテストを実施
+bench:
+	cd $(SRC_DIR) && \
+	go mod tidy && \
+	go test ./... -bench . -benchmem
+
 # 実行バイナリとDockerイメージの削除
 clean:
 	@if [ -f $(SRC_DIR)/$(BINARY_NAME) ]; then \

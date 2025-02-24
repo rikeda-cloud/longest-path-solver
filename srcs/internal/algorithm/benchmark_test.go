@@ -1,0 +1,58 @@
+package algorithm
+
+import (
+	"testing"
+
+	"github.com/rikeda-cloud/longest-path-solver/internal/graph"
+)
+
+func setupGraph() *graph.Graph {
+	g := graph.NewGraph()
+	g.AddEdge(2, 1, 2.0)
+	g.AddEdge(3, 1, 3.0)
+	g.AddEdge(3, 2, 3.0)
+	g.AddEdge(4, 1, 4.0)
+	g.AddEdge(4, 2, 4.0)
+	g.AddEdge(4, 3, 4.0)
+	g.AddEdge(5, 1, 5.0)
+	g.AddEdge(5, 2, 5.0)
+	g.AddEdge(5, 3, 5.0)
+	g.AddEdge(5, 4, 5.0)
+	g.AddEdge(6, 1, 6.0)
+	g.AddEdge(6, 2, 6.0)
+	g.AddEdge(6, 3, 6.0)
+	g.AddEdge(6, 4, 6.0)
+	g.AddEdge(6, 5, 6.0)
+	g.AddEdge(7, 1, 7.0)
+	g.AddEdge(7, 2, 7.0)
+	g.AddEdge(7, 3, 7.0)
+	g.AddEdge(7, 4, 7.0)
+	g.AddEdge(7, 5, 7.0)
+	g.AddEdge(7, 6, 7.0)
+	g.AddEdge(8, 1, 8.0)
+	g.AddEdge(8, 2, 8.0)
+	g.AddEdge(8, 3, 8.0)
+	g.AddEdge(8, 4, 8.0)
+	g.AddEdge(8, 5, 8.0)
+	g.AddEdge(8, 6, 8.0)
+	g.AddEdge(8, 7, 8.0)
+	return g
+}
+
+func BenchmarkFindLongestPathByDfs(b *testing.B) {
+	g := setupGraph()
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		FindLongestPathByDfs(g)
+	}
+}
+
+func BenchmarkFindLongestPathByDfsGoroutine(b *testing.B) {
+	g := setupGraph()
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		FindLongestPathByDfsGoroutine(g)
+	}
+}
