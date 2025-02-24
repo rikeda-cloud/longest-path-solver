@@ -61,6 +61,29 @@ func (g *Graph) AddEdge(id1, id2 EdgeID, distance float64) error {
 	return nil
 }
 
+func (g *Graph) CalcTotalDistance(path []EdgeID) (float64, bool) {
+	totalDistance := 0.0
+	for i := 0; i < len(path)-1; i++ {
+		fromID := path[i]
+		toID := path[i+1]
+		distance, ok := g.getDistance(fromID, toID)
+		if !ok {
+			return 0.0, false
+		}
+		totalDistance += distance
+	}
+	return totalDistance, true
+}
+
+func (g *Graph) getDistance(fromEdgeID, toEdgeID EdgeID) (float64, bool) {
+	for _, edge := range g.Adj[fromEdgeID] {
+		if edge.To == toEdgeID {
+			return edge.Distance, true
+		}
+	}
+	return 0.0, false
+}
+
 func (g *Graph) edgeExists(id1, id2 EdgeID) bool {
 	for _, edge := range g.Adj[id1] {
 		if edge.To == id2 {
