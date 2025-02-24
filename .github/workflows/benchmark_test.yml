@@ -6,7 +6,7 @@ on:
       - main  # mainブランチへのプッシュをトリガーにする
 
 jobs:
-  test:
+  benchmark:
     runs-on: ubuntu-latest
 
     steps:
