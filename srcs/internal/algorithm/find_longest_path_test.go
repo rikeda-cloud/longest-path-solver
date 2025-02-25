@@ -9,7 +9,10 @@ import (
 
 type FindLongestPath func(graph.IGraph) []graph.EdgeID
 
-func TestFindLongestPath(t *testing.T) {
+func createTests() []struct {
+	graphInputs []*input.GraphInput
+	expected    []graph.EdgeID
+} {
 	tests := []struct {
 		graphInputs []*input.GraphInput
 		expected    []graph.EdgeID
@@ -83,12 +86,29 @@ func TestFindLongestPath(t *testing.T) {
 			expected: []graph.EdgeID{4, 2, 5, 1, 6, 3, 7},
 		},
 	}
+	return tests
+}
 
+func TestFindLongestPathGraph(t *testing.T) {
+	tests := createTests()
 	algorithms := []FindLongestPath{FindLongestPathByDfs, FindLongestPathByDfsGoroutine}
 
 	for _, algorithm := range algorithms {
 		for _, test := range tests {
 			g, _ := input.ConvertGraphInputsToGraph(test.graphInputs, graph.NewGraph())
+			result := algorithm(g)
+			assertEdgeIDSlice(t, test.expected, result)
+		}
+	}
+}
+
+func TestFindLongestPathMapBasedGraph(t *testing.T) {
+	tests := createTests()
+	algorithms := []FindLongestPath{FindLongestPathByDfs, FindLongestPathByDfsGoroutine}
+
+	for _, algorithm := range algorithms {
+		for _, test := range tests {
+			g, _ := input.ConvertGraphInputsToGraph(test.graphInputs, graph.NewMapBasedGraph())
 			result := algorithm(g)
 			assertEdgeIDSlice(t, test.expected, result)
 		}
