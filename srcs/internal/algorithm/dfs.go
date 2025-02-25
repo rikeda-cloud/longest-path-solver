@@ -5,7 +5,7 @@ import (
 	"github.com/rikeda-cloud/longest-path-solver/internal/stack"
 )
 
-func dfs(g *graph.Graph, startEdgeID graph.EdgeID) ([]graph.EdgeID, float64) {
+func dfs(g graph.IGraph, startEdgeID graph.EdgeID) ([]graph.EdgeID, float64) {
 	longestPath := []graph.EdgeID{}
 	maxDistance := 0.0
 	s := stack.NewStack()
@@ -24,10 +24,10 @@ func dfs(g *graph.Graph, startEdgeID graph.EdgeID) ([]graph.EdgeID, float64) {
 			continue
 		}
 
-		for _, neighbor := range g.Adj[top.Node] {
-			if !contains(top.Path, neighbor) || canCreateLoop(top.Path, neighbor.To) {
-				newPath := append([]graph.EdgeID{}, append(top.Path, neighbor.To)...)
-				s.Push(stack.Item{Node: neighbor.To, Path: newPath})
+		for _, neighborID := range g.GetToEdgeIDSlice(top.Node) {
+			if !contains(top.Path, neighborID) || canCreateLoop(top.Path, neighborID) {
+				newPath := append([]graph.EdgeID{}, append(top.Path, neighborID)...)
+				s.Push(stack.Item{Node: neighborID, Path: newPath})
 			}
 		}
 	}
@@ -53,9 +53,9 @@ func canCreateLoop(path []graph.EdgeID, nextEdgeID graph.EdgeID) bool {
 	return startEdgeID == nextEdgeID
 }
 
-func contains(path []graph.EdgeID, edge graph.Edge) bool {
+func contains(path []graph.EdgeID, edgeID graph.EdgeID) bool {
 	for _, n := range path {
-		if n == edge.To {
+		if n == edgeID {
 			return true
 		}
 	}
