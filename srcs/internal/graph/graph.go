@@ -17,14 +17,6 @@ func NewGraph() *Graph {
 	return &Graph{Adj: make(map[EdgeID][]Edge)}
 }
 
-func NewGraphWithEdges(edges map[EdgeID][]Edge) *Graph {
-	adj := make(map[EdgeID][]Edge)
-	for key, edges := range edges {
-		adj[key] = edges
-	}
-	return &Graph{Adj: adj}
-}
-
 func (g *Graph) Equal(other *Graph) bool {
 	// Compare the number of edges in both graphs
 	if len(g.Adj) != len(other.Adj) {

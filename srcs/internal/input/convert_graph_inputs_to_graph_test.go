@@ -19,7 +19,7 @@ func TestConvertGraphInputsToGraph(t *testing.T) {
 				{Start: 3, End: 4, Distance: 4.0},
 				{Start: 4, End: 1, Distance: 1.4},
 			},
-			expected: graph.NewGraphWithEdges(map[graph.EdgeID][]graph.Edge{
+			expected: newGraphWithEdges(map[graph.EdgeID][]graph.Edge{
 				1: {{To: 2, Distance: 8.54}, {To: 3, Distance: 2.19}, {To: 4, Distance: 1.4}},
 				2: {{To: 1, Distance: 8.54}, {To: 3, Distance: 3.11}},
 				3: {{To: 2, Distance: 3.11}, {To: 1, Distance: 2.19}, {To: 4, Distance: 4.0}},
@@ -35,7 +35,7 @@ func TestConvertGraphInputsToGraph(t *testing.T) {
 				{Start: 5, End: 6, Distance: 5.0},
 				{Start: 6, End: 1, Distance: 6.0},
 			},
-			expected: graph.NewGraphWithEdges(map[graph.EdgeID][]graph.Edge{
+			expected: newGraphWithEdges(map[graph.EdgeID][]graph.Edge{
 				1: {{To: 2, Distance: 1.0}, {To: 6, Distance: 6.0}},
 				2: {{To: 1, Distance: 1.0}, {To: 3, Distance: 2.0}},
 				3: {{To: 2, Distance: 2.0}, {To: 4, Distance: 3.0}},
@@ -46,7 +46,7 @@ func TestConvertGraphInputsToGraph(t *testing.T) {
 		},
 		{
 			graphInputs: []*GraphInput{{Start: 4, End: 5, Distance: 6.0}},
-			expected: graph.NewGraphWithEdges(map[graph.EdgeID][]graph.Edge{
+			expected: newGraphWithEdges(map[graph.EdgeID][]graph.Edge{
 				4: {{To: 5, Distance: 6.0}},
 				5: {{To: 4, Distance: 6.0}},
 			}),
@@ -86,4 +86,12 @@ func assertGraphEqual(t *testing.T, expected, actual *graph.Graph) {
 	if expected.Equal(actual) == false {
 		t.Errorf("graphs are not equal: expected %+v, actual %+v", expected, actual)
 	}
+}
+
+func newGraphWithEdges(edges map[graph.EdgeID][]graph.Edge) *graph.Graph {
+	adj := make(map[graph.EdgeID][]graph.Edge)
+	for key, edges := range edges {
+		adj[key] = edges
+	}
+	return &graph.Graph{Adj: adj}
 }
