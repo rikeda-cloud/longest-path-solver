@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/rikeda-cloud/longest-path-solver/internal/algorithm"
+	"github.com/rikeda-cloud/longest-path-solver/internal/graph"
 	"github.com/rikeda-cloud/longest-path-solver/internal/input"
 	"github.com/rikeda-cloud/longest-path-solver/internal/output"
 )
@@ -15,7 +16,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	graph, err := input.ConvertGraphInputsToGraph(graphInuts)
+	graph, err := input.ConvertGraphInputsToGraph(graphInuts, graph.NewGraph())
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -70,8 +70,9 @@ func TestConvertGraphInputsToGraph(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		result, _ := ConvertGraphInputsToGraph(test.graphInputs)
-		assertGraphEqual(t, test.expected, result)
+		result, _ := ConvertGraphInputsToGraph(test.graphInputs, graph.NewGraph())
+		g, _ := result.(*graph.Graph) // Cast
+		assertGraphEqual(t, test.expected, g)
 	}
 }
 

@@ -88,7 +88,7 @@ func TestFindLongestPath(t *testing.T) {
 
 	for _, algorithm := range algorithms {
 		for _, test := range tests {
-			g, _ := input.ConvertGraphInputsToGraph(test.graphInputs)
+			g, _ := input.ConvertGraphInputsToGraph(test.graphInputs, graph.NewGraph())
 			result := algorithm(g)
 			assertEdgeIDSlice(t, test.expected, result)
 		}
