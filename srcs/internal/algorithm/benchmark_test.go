@@ -6,8 +6,7 @@ import (
 	"github.com/rikeda-cloud/longest-path-solver/internal/graph"
 )
 
-func setupGraph() *graph.Graph {
-	g := graph.NewGraph()
+func setupGraph(g graph.IGraph) graph.IGraph {
 	_ = g.AddEdge(2, 1, 2.0)
 	_ = g.AddEdge(3, 1, 3.0)
 	_ = g.AddEdge(3, 2, 3.0)
@@ -40,7 +39,7 @@ func setupGraph() *graph.Graph {
 }
 
 func BenchmarkFindLongestPathByDfs(b *testing.B) {
-	g := setupGraph()
+	g := setupGraph(graph.NewGraph())
 	b.ResetTimer()
 
 	for i := 0; i < b.N; i++ {
@@ -49,7 +48,25 @@ func BenchmarkFindLongestPathByDfs(b *testing.B) {
 }
 
 func BenchmarkFindLongestPathByDfsGoroutine(b *testing.B) {
-	g := setupGraph()
+	g := setupGraph(graph.NewGraph())
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		FindLongestPathByDfsGoroutine(g)
+	}
+}
+
+func BenchmarkFindLongestPathByDfsMapBaseGraph(b *testing.B) {
+	g := setupGraph(graph.NewMapBasedGraph())
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		FindLongestPathByDfs(g)
+	}
+}
+
+func BenchmarkFindLongestPathByDfsGoroutineMapBaseGraph(b *testing.B) {
+	g := setupGraph(graph.NewMapBasedGraph())
 	b.ResetTimer()
 
 	for i := 0; i < b.N; i++ {
