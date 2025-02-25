@@ -51,7 +51,7 @@ func TestStackOperations(t *testing.T) {
 		t.Errorf("Expected stack to be empty after popping all elements, but it is not")
 	}
 
-	poppedItem, ok = s.Pop()
+	_, ok = s.Pop()
 	if ok {
 		t.Errorf("Expected Pop on an empty stack to return false, but it returned true")
 	}

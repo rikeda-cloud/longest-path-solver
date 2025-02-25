@@ -8,8 +8,8 @@ import (
 func dfs(g graph.IGraph, startEdgeID graph.EdgeID) ([]graph.EdgeID, float64) {
 	longestPath := []graph.EdgeID{}
 	maxDistance := 0.0
-	s := stack.NewStack()
-	s.Push(stack.Item{Node: startEdgeID, Path: []graph.EdgeID{startEdgeID}})
+	s := stack.NewStack[graph.PathNode]()
+	s.Push(graph.PathNode{Path: []graph.EdgeID{startEdgeID}, Node: startEdgeID})
 
 	for !s.IsEmpty() {
 		top, _ := s.Pop()
@@ -27,7 +27,7 @@ func dfs(g graph.IGraph, startEdgeID graph.EdgeID) ([]graph.EdgeID, float64) {
 		for _, neighborID := range g.GetToEdgeIDSlice(top.Node) {
 			if !contains(top.Path, neighborID) || canCreateLoop(top.Path, neighborID) {
 				newPath := append([]graph.EdgeID{}, append(top.Path, neighborID)...)
-				s.Push(stack.Item{Node: neighborID, Path: newPath})
+				s.Push(graph.PathNode{Path: newPath, Node: neighborID})
 			}
 		}
 	}
