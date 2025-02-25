@@ -17,22 +17,21 @@ func NewGraph() *Graph {
 	return &Graph{Adj: make(map[EdgeID][]Edge)}
 }
 
-func (g *Graph) Equal(other *Graph) bool {
+func (g *Graph) Equal(other IGraph) bool {
 	// Compare the number of edges in both graphs
-	if len(g.Adj) != len(other.Adj) {
+	if len(g.GetFromEdgeIDSlice()) != len(other.GetFromEdgeIDSlice()) {
 		return false
 	}
 
-	for key, edges := range g.Adj {
-		otherEdges, exists := other.Adj[key]
-		// Check if the other graph has the same key and the same number of edges
-		if !exists || len(edges) != len(otherEdges) {
+	for _, fromEdgeID := range g.GetFromEdgeIDSlice() {
+		gToIDs := g.GetToEdgeIDSlice(fromEdgeID)
+		otherToIDs := other.GetToEdgeIDSlice(fromEdgeID)
+
+		if len(gToIDs) != len(otherToIDs) {
 			return false
 		}
-
-		// Compare the edges for each key
-		for i := range edges {
-			if edges[i] != otherEdges[i] {
+		for i := range gToIDs {
+			if gToIDs[i] != otherToIDs[i] {
 				return false
 			}
 		}

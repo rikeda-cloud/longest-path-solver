@@ -12,22 +12,21 @@ func NewMapBasedGraph() *MapBasedGraph {
 	return &MapBasedGraph{Adj: make(map[EdgeID]map[EdgeID]float64)}
 }
 
-func (g *MapBasedGraph) Equal(other *MapBasedGraph) bool {
-	// グラフのエッジ数を比較
-	if len(g.Adj) != len(other.Adj) {
+func (g *MapBasedGraph) Equal(other IGraph) bool {
+	// Compare the number of edges in both graphs
+	if len(g.GetFromEdgeIDSlice()) != len(other.GetFromEdgeIDSlice()) {
 		return false
 	}
 
-	for key, edges := range g.Adj {
-		otherEdges, exists := other.Adj[key]
-		// 他のグラフに同じキーと同じ数のエッジがあるか確認
-		if !exists || len(edges) != len(otherEdges) {
+	for _, fromEdgeID := range g.GetFromEdgeIDSlice() {
+		gToIDs := g.GetToEdgeIDSlice(fromEdgeID)
+		otherToIDs := other.GetToEdgeIDSlice(fromEdgeID)
+
+		if len(gToIDs) != len(otherToIDs) {
 			return false
 		}
-
-		// 各エッジを比較
-		for toID, distance := range edges {
-			if otherDistance, found := otherEdges[toID]; !found || distance != otherDistance {
+		for i := range gToIDs {
+			if gToIDs[i] != otherToIDs[i] {
 				return false
 			}
 		}
