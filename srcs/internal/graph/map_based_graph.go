@@ -13,20 +13,20 @@ func NewMapBasedGraph() *MapBasedGraph {
 }
 
 func (g *MapBasedGraph) Equal(other *MapBasedGraph) bool {
-	// Compare the number of edges in both graphs
-	if len(g.GetFromEdgeIDSlice()) != len(other.GetFromEdgeIDSlice()) {
+	if len(g.Adj) != len(other.Adj) {
 		return false
 	}
 
-	for _, fromEdgeID := range g.GetFromEdgeIDSlice() {
-		gToIDs := g.GetToEdgeIDSlice(fromEdgeID)
-		otherToIDs := other.GetToEdgeIDSlice(fromEdgeID)
-
-		if len(gToIDs) != len(otherToIDs) {
+	for from, edges := range g.Adj {
+		otherEdges, exists := other.Adj[from]
+		if !exists {
 			return false
 		}
-		for i := range gToIDs {
-			if gToIDs[i] != otherToIDs[i] {
+		if len(edges) != len(otherEdges) {
+			return false
+		}
+		for to, weight := range edges {
+			if otherWeight, exists := otherEdges[to]; !exists || weight != otherWeight {
 				return false
 			}
 		}
