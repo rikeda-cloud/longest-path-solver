@@ -17,7 +17,7 @@ func NewGraph() *Graph {
 	return &Graph{Adj: make(map[EdgeID][]Edge)}
 }
 
-func (g *Graph) Equal(other IGraph) bool {
+func (g *Graph) Equal(other *Graph) bool {
 	// Compare the number of edges in both graphs
 	if len(g.GetFromEdgeIDSlice()) != len(other.GetFromEdgeIDSlice()) {
 		return false

@@ -5,5 +5,4 @@ type IGraph interface {
 	GetFromEdgeIDSlice() []EdgeID
 	GetToEdgeIDSlice(EdgeID) []EdgeID
 	AddEdge(EdgeID, EdgeID, float64) error
-	Equal(IGraph) bool
 }

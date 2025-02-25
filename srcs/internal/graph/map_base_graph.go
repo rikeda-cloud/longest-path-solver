@@ -5,14 +5,14 @@ import (
 )
 
 type MapBasedGraph struct {
-	Adj map[EdgeID]map[EdgeID]float64
+	Adj map[EdgeID]map[EdgeID]float64 // adj = "Adjacency Map"
 }
 
 func NewMapBasedGraph() *MapBasedGraph {
 	return &MapBasedGraph{Adj: make(map[EdgeID]map[EdgeID]float64)}
 }
 
-func (g *MapBasedGraph) Equal(other IGraph) bool {
+func (g *MapBasedGraph) Equal(other *MapBasedGraph) bool {
 	// Compare the number of edges in both graphs
 	if len(g.GetFromEdgeIDSlice()) != len(other.GetFromEdgeIDSlice()) {
 		return false
@@ -42,11 +42,11 @@ func (g *MapBasedGraph) AddEdge(id1, id2 EdgeID, distance float64) error {
 	if g.Adj[id1] == nil {
 		g.Adj[id1] = make(map[EdgeID]float64)
 	}
-	g.Adj[id1][id2] = distance
-
 	if g.Adj[id2] == nil {
 		g.Adj[id2] = make(map[EdgeID]float64)
 	}
+
+	g.Adj[id1][id2] = distance
 	g.Adj[id2][id1] = distance
 
 	return nil
