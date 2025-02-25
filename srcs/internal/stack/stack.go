@@ -1,36 +1,28 @@
 package stack
 
-import (
-	"github.com/rikeda-cloud/longest-path-solver/internal/graph"
-)
-
-type Stack struct {
-	data []Item
+type Stack[T any] struct {
+	data []T
 }
 
-type Item struct {
-	Node graph.EdgeID
-	Path []graph.EdgeID
+func NewStack[T any]() *Stack[T] {
+	return &Stack[T]{data: []T{}}
 }
 
-func NewStack() *Stack {
-	return &Stack{data: []Item{}}
-}
-
-func (s *Stack) Push(item Item) {
+func (s *Stack[T]) Push(item T) {
 	s.data = append(s.data, item)
 }
 
-func (s *Stack) Pop() (Item, bool) {
+func (s *Stack[T]) Pop() (T, bool) {
+	var zeroValue T
 	dataSize := len(s.data)
 	if dataSize == 0 {
-		return Item{}, false
+		return zeroValue, false
 	}
 	item := s.data[dataSize-1]
 	s.data = s.data[:dataSize-1]
 	return item, true
 }
 
-func (s *Stack) IsEmpty() bool {
+func (s *Stack[T]) IsEmpty() bool {
 	return len(s.data) == 0
 }
