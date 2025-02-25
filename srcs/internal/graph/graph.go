@@ -49,7 +49,7 @@ func (g *Graph) Equal(other *Graph) bool {
 }
 
 func (g *Graph) AddEdge(id1, id2 EdgeID, distance float64) error {
-	if g.edgeExists(id1, id2) {
+	if _, exist := g.findEdge(id1, id2); exist {
 		return errors.New("edge already exists")
 	}
 
@@ -66,29 +66,20 @@ func (g *Graph) CalcTotalDistance(path []EdgeID) (float64, bool) {
 	for i := 0; i < len(path)-1; i++ {
 		fromID := path[i]
 		toID := path[i+1]
-		distance, ok := g.getDistance(fromID, toID)
+		edge, ok := g.findEdge(fromID, toID)
 		if !ok {
 			return 0.0, false
 		}
-		totalDistance += distance
+		totalDistance += edge.Distance
 	}
 	return totalDistance, true
 }
 
-func (g *Graph) getDistance(fromEdgeID, toEdgeID EdgeID) (float64, bool) {
+func (g *Graph) findEdge(fromEdgeID, toEdgeID EdgeID) (Edge, bool) {
 	for _, edge := range g.Adj[fromEdgeID] {
 		if edge.To == toEdgeID {
-			return edge.Distance, true
+			return edge, true
 		}
 	}
-	return 0.0, false
-}
-
-func (g *Graph) edgeExists(id1, id2 EdgeID) bool {
-	for _, edge := range g.Adj[id1] {
-		if edge.To == id2 {
-			return true
-		}
-	}
-	return false
+	return Edge{}, false
 }
