@@ -53,9 +53,9 @@ func canCreateLoop(path []graph.EdgeID, nextEdgeID graph.EdgeID) bool {
 	return startEdgeID == nextEdgeID
 }
 
-func contains(path []graph.EdgeID, node graph.Edge) bool {
+func contains(path []graph.EdgeID, edge graph.Edge) bool {
 	for _, n := range path {
-		if n == node.To {
+		if n == edge.To {
 			return true
 		}
 	}
