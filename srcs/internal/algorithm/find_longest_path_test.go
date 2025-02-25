@@ -7,7 +7,7 @@ import (
 	"github.com/rikeda-cloud/longest-path-solver/internal/input"
 )
 
-type FindLongestPath func(*graph.Graph) []graph.EdgeID
+type FindLongestPath func(graph.IGraph) []graph.EdgeID
 
 func TestFindLongestPath(t *testing.T) {
 	tests := []struct {

@@ -53,6 +53,14 @@ func (g *Graph) AddEdge(id1, id2 EdgeID, distance float64) error {
 	return nil
 }
 
+func (g *Graph) GetFromEdgeIDSlice() []EdgeID {
+	fromEdgeIDSlice := make([]EdgeID, 0, len(g.Adj))
+	for fromEdgeID := range g.Adj {
+		fromEdgeIDSlice = append(fromEdgeIDSlice, fromEdgeID)
+	}
+	return fromEdgeIDSlice
+}
+
 func (g *Graph) GetToEdgeIDSlice(fromEdgeID EdgeID) []EdgeID {
 	edges := g.Adj[fromEdgeID]
 	toEdgeIDSlice := make([]EdgeID, 0, len(edges))
