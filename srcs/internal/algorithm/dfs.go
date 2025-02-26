@@ -9,14 +9,15 @@ func dfs(g graph.IGraph, startEdgeID graph.EdgeID) ([]graph.EdgeID, float64) {
 	longestPath := []graph.EdgeID{}
 	maxDistance := 0.0
 	s := stack.NewStack[graph.PathNode]()
-	s.Push(graph.PathNode{Path: []graph.EdgeID{startEdgeID}, Node: startEdgeID})
+	s.Push(graph.PathNode{
+		Path: []graph.EdgeID{startEdgeID}, Node: startEdgeID, Distance: 0.0,
+	})
 
 	for !s.IsEmpty() {
 		top, _ := s.Pop()
-		distance, _ := g.CalcTotalDistance(top.Path)
-		if distance > maxDistance {
+		if top.Distance > maxDistance {
 			longestPath = top.Path
-			maxDistance = distance
+			maxDistance = top.Distance
 		}
 
 		// If the start and end points are the same, no further search is performed.
@@ -27,7 +28,11 @@ func dfs(g graph.IGraph, startEdgeID graph.EdgeID) ([]graph.EdgeID, float64) {
 		for _, neighborID := range g.GetToEdgeIDSlice(top.Node) {
 			if !contains(top.Path, neighborID) || canCreateLoop(top.Path, neighborID) {
 				newPath := append([]graph.EdgeID{}, append(top.Path, neighborID)...)
-				s.Push(graph.PathNode{Path: newPath, Node: neighborID})
+				distanceToNeighbor, _ := g.FindDistance(top.Node, neighborID)
+				newDistance := top.Distance + distanceToNeighbor
+				s.Push(graph.PathNode{
+					Path: newPath, Node: neighborID, Distance: newDistance,
+				})
 			}
 		}
 	}

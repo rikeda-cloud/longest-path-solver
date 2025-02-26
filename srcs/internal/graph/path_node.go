@@ -1,6 +1,7 @@
 package graph
 
 type PathNode struct {
-	Path []EdgeID
-	Node EdgeID
+	Path     []EdgeID
+	Node     EdgeID
+	Distance float64
 }
