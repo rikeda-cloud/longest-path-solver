@@ -18,14 +18,13 @@ func NewGraph() *Graph {
 }
 
 func (g *Graph) Equal(other *Graph) bool {
-	// Compare the number of edges in both graphs
 	if len(g.GetFromEdgeIDSlice()) != len(other.GetFromEdgeIDSlice()) {
 		return false
 	}
 
-	for _, fromEdgeID := range g.GetFromEdgeIDSlice() {
-		gToIDs := g.GetToEdgeIDSlice(fromEdgeID)
-		otherToIDs := other.GetToEdgeIDSlice(fromEdgeID)
+	for _, fromID := range g.GetFromEdgeIDSlice() {
+		gToIDs := g.GetToEdgeIDSlice(fromID)
+		otherToIDs := other.GetToEdgeIDSlice(fromID)
 
 		if len(gToIDs) != len(otherToIDs) {
 			return false
@@ -63,14 +62,14 @@ func (g *Graph) FindDistance(fromID, toID EdgeID) (float64, bool) {
 
 func (g *Graph) GetFromEdgeIDSlice() []EdgeID {
 	fromEdgeIDSlice := make([]EdgeID, 0, len(g.Adj))
-	for fromEdgeID := range g.Adj {
-		fromEdgeIDSlice = append(fromEdgeIDSlice, fromEdgeID)
+	for fromID := range g.Adj {
+		fromEdgeIDSlice = append(fromEdgeIDSlice, fromID)
 	}
 	return fromEdgeIDSlice
 }
 
-func (g *Graph) GetToEdgeIDSlice(fromEdgeID EdgeID) []EdgeID {
-	edges := g.Adj[fromEdgeID]
+func (g *Graph) GetToEdgeIDSlice(fromID EdgeID) []EdgeID {
+	edges := g.Adj[fromID]
 	toEdgeIDSlice := make([]EdgeID, 0, len(edges))
 	for _, edge := range edges {
 		toEdgeIDSlice = append(toEdgeIDSlice, edge.To)

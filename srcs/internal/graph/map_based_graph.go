@@ -63,15 +63,15 @@ func (g *MapBasedGraph) FindDistance(fromID, toID EdgeID) (float64, bool) {
 
 func (g *MapBasedGraph) GetFromEdgeIDSlice() []EdgeID {
 	fromEdgeIDSlice := make([]EdgeID, 0, len(g.Adj))
-	for fromEdgeID := range g.Adj {
-		fromEdgeIDSlice = append(fromEdgeIDSlice, fromEdgeID)
+	for fromID := range g.Adj {
+		fromEdgeIDSlice = append(fromEdgeIDSlice, fromID)
 	}
 	return fromEdgeIDSlice
 }
 
-func (g *MapBasedGraph) GetToEdgeIDSlice(fromEdgeID EdgeID) []EdgeID {
-	toEdgeIDSlice := make([]EdgeID, 0, len(g.Adj[fromEdgeID]))
-	for key := range g.Adj[fromEdgeID] {
+func (g *MapBasedGraph) GetToEdgeIDSlice(fromID EdgeID) []EdgeID {
+	toEdgeIDSlice := make([]EdgeID, 0, len(g.Adj[fromID]))
+	for key := range g.Adj[fromID] {
 		toEdgeIDSlice = append(toEdgeIDSlice, key)
 	}
 	return toEdgeIDSlice
