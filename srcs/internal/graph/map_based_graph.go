@@ -35,7 +35,7 @@ func (g *MapBasedGraph) Equal(other *MapBasedGraph) bool {
 }
 
 func (g *MapBasedGraph) AddEdge(id1, id2 EdgeID, distance float64) error {
-	if _, exist := g.findEdge(id1, id2); exist {
+	if _, exist := g.FindDistance(id1, id2); exist {
 		return errors.New("edge already exists")
 	}
 
@@ -68,23 +68,9 @@ func (g *MapBasedGraph) GetToEdgeIDSlice(fromEdgeID EdgeID) []EdgeID {
 	return toEdgeIDSlice
 }
 
-func (g *MapBasedGraph) CalcTotalDistance(path []EdgeID) (float64, bool) {
-	totalDistance := 0.0
-	for i := 0; i < len(path)-1; i++ {
-		fromID := path[i]
-		toID := path[i+1]
-		distance, ok := g.findEdge(fromID, toID)
-		if !ok {
-			return 0.0, false
-		}
-		totalDistance += distance
-	}
-	return totalDistance, true
-}
-
-func (g *MapBasedGraph) findEdge(fromEdgeID, toEdgeID EdgeID) (float64, bool) {
-	if edges, exists := g.Adj[fromEdgeID]; exists {
-		if distance, found := edges[toEdgeID]; found {
+func (g *MapBasedGraph) FindDistance(fromID, toID EdgeID) (float64, bool) {
+	if edges, existEdges := g.Adj[fromID]; existEdges {
+		if distance, existDistance := edges[toID]; existDistance {
 			return distance, true
 		}
 	}
