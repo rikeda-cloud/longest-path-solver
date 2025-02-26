@@ -20,10 +20,24 @@ func TestConvertGraphInputsToMapBaseGraph(t *testing.T) {
 				{Start: 4, End: 1, Distance: 1.4},
 			},
 			expected: newMapBasedGraphWithEdges(map[graph.EdgeID][]graph.Edge{
-				1: {{To: 2, Distance: 8.54}, {To: 3, Distance: 2.19}, {To: 4, Distance: 1.4}},
-				2: {{To: 1, Distance: 8.54}, {To: 3, Distance: 3.11}},
-				3: {{To: 2, Distance: 3.11}, {To: 1, Distance: 2.19}, {To: 4, Distance: 4.0}},
-				4: {{To: 3, Distance: 4.0}, {To: 1, Distance: 1.4}},
+				1: {
+					{To: 2, Distance: 8.54},
+					{To: 3, Distance: 2.19},
+					{To: 4, Distance: 1.4},
+				},
+				2: {
+					{To: 1, Distance: 8.54},
+					{To: 3, Distance: 3.11},
+				},
+				3: {
+					{To: 2, Distance: 3.11},
+					{To: 1, Distance: 2.19},
+					{To: 4, Distance: 4.0},
+				},
+				4: {
+					{To: 3, Distance: 4.0},
+					{To: 1, Distance: 1.4},
+				},
 			}),
 		},
 		{
