@@ -11,12 +11,12 @@ import (
 )
 
 func main() {
-	graphInuts, err := input.ParseGraphInputs(os.Stdin)
+	graphInputs, err := input.ParseGraphInputs(os.Stdin)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	graph, err := input.ConvertGraphInputsToGraph(graphInuts, graph.NewGraph())
+	graph, err := input.ConvertGraphInputsToGraph(graphInputs, graph.NewGraph())
 	if err != nil {
 		log.Fatal(err)
 	}
