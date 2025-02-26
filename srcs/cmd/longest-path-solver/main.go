@@ -20,6 +20,6 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	result := algorithm.FindLongestPathByDfs(graph)
+	result := algorithm.FindLongestPathByDfsGoroutine(graph)
 	output.PrintResult(result)
 }
