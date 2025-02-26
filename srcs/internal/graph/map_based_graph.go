@@ -52,6 +52,15 @@ func (g *MapBasedGraph) AddEdge(id1, id2 EdgeID, distance float64) error {
 	return nil
 }
 
+func (g *MapBasedGraph) FindDistance(fromID, toID EdgeID) (float64, bool) {
+	if edges, existEdges := g.Adj[fromID]; existEdges {
+		if distance, existDistance := edges[toID]; existDistance {
+			return distance, true
+		}
+	}
+	return 0.0, false
+}
+
 func (g *MapBasedGraph) GetFromEdgeIDSlice() []EdgeID {
 	fromEdgeIDSlice := make([]EdgeID, 0, len(g.Adj))
 	for fromEdgeID := range g.Adj {
@@ -66,13 +75,4 @@ func (g *MapBasedGraph) GetToEdgeIDSlice(fromEdgeID EdgeID) []EdgeID {
 		toEdgeIDSlice = append(toEdgeIDSlice, key)
 	}
 	return toEdgeIDSlice
-}
-
-func (g *MapBasedGraph) FindDistance(fromID, toID EdgeID) (float64, bool) {
-	if edges, existEdges := g.Adj[fromID]; existEdges {
-		if distance, existDistance := edges[toID]; existDistance {
-			return distance, true
-		}
-	}
-	return 0.0, false
 }
