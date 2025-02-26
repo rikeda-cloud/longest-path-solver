@@ -40,7 +40,7 @@ func (g *Graph) Equal(other *Graph) bool {
 
 func (g *Graph) AddEdge(id1, id2 EdgeID, distance float64) error {
 	if _, exist := g.FindDistance(id1, id2); exist {
-		return errors.New("edge already exists")
+		return errors.New("Duplicate edges")
 	}
 
 	// Adds an edge between id1 and id2 with the given distance,
