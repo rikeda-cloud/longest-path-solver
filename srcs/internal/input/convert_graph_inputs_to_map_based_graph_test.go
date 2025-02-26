@@ -20,24 +20,10 @@ func TestConvertGraphInputsToMapBaseGraph(t *testing.T) {
 				{Start: 4, End: 1, Distance: 1.4},
 			},
 			expected: newMapBasedGraphWithEdges(map[graph.EdgeID][]graph.Edge{
-				1: {
-					{To: 2, Distance: 8.54},
-					{To: 3, Distance: 2.19},
-					{To: 4, Distance: 1.4},
-				},
-				2: {
-					{To: 1, Distance: 8.54},
-					{To: 3, Distance: 3.11},
-				},
-				3: {
-					{To: 2, Distance: 3.11},
-					{To: 1, Distance: 2.19},
-					{To: 4, Distance: 4.0},
-				},
-				4: {
-					{To: 3, Distance: 4.0},
-					{To: 1, Distance: 1.4},
-				},
+				1: {{To: 2, Distance: 8.54}},
+				2: {{To: 3, Distance: 3.11}},
+				3: {{To: 1, Distance: 2.19}, {To: 4, Distance: 4.0}},
+				4: {{To: 1, Distance: 1.4}},
 			}),
 		},
 		{
@@ -50,19 +36,30 @@ func TestConvertGraphInputsToMapBaseGraph(t *testing.T) {
 				{Start: 6, End: 1, Distance: 6.0},
 			},
 			expected: newMapBasedGraphWithEdges(map[graph.EdgeID][]graph.Edge{
-				1: {{To: 2, Distance: 1.0}, {To: 6, Distance: 6.0}},
-				2: {{To: 1, Distance: 1.0}, {To: 3, Distance: 2.0}},
-				3: {{To: 2, Distance: 2.0}, {To: 4, Distance: 3.0}},
-				4: {{To: 3, Distance: 3.0}, {To: 5, Distance: 4.0}},
-				5: {{To: 4, Distance: 4.0}, {To: 6, Distance: 5.0}},
-				6: {{To: 5, Distance: 5.0}, {To: 1, Distance: 6.0}},
+				1: {{To: 2, Distance: 1.0}},
+				2: {{To: 3, Distance: 2.0}},
+				3: {{To: 4, Distance: 3.0}},
+				4: {{To: 5, Distance: 4.0}},
+				5: {{To: 6, Distance: 5.0}},
+				6: {{To: 1, Distance: 6.0}},
 			}),
 		},
 		{
 			graphInputs: []*GraphInput{{Start: 4, End: 5, Distance: 6.0}},
 			expected: newMapBasedGraphWithEdges(map[graph.EdgeID][]graph.Edge{
 				4: {{To: 5, Distance: 6.0}},
-				5: {{To: 4, Distance: 6.0}},
+			}),
+		},
+		{
+			graphInputs: []*GraphInput{
+				{Start: 1, End: 2, Distance: 1.0},
+				{Start: 3, End: 4, Distance: 2.0},
+				{Start: 2, End: 1, Distance: 3.0},
+			},
+			expected: newMapBasedGraphWithEdges(map[graph.EdgeID][]graph.Edge{
+				1: {{To: 2, Distance: 1.0}},
+				2: {{To: 1, Distance: 3.0}},
+				3: {{To: 4, Distance: 2.0}},
 			}),
 		},
 		{ // Duplicate edge from 1 to 2(should result in an error)
@@ -70,14 +67,6 @@ func TestConvertGraphInputsToMapBaseGraph(t *testing.T) {
 				{Start: 1, End: 2, Distance: 1.0},
 				{Start: 3, End: 4, Distance: 2.0},
 				{Start: 1, End: 2, Distance: 3.0},
-			},
-			expected: nil,
-		},
-		{ // Duplicate reverse edge from 2 to 1(should result in an error)
-			graphInputs: []*GraphInput{
-				{Start: 1, End: 2, Distance: 1.0},
-				{Start: 3, End: 4, Distance: 2.0},
-				{Start: 2, End: 1, Distance: 3.0},
 			},
 			expected: nil,
 		},
