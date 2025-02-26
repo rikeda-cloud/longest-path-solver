@@ -125,7 +125,7 @@ func assertEdgeIDs(t *testing.T, expected, actual []graph.EdgeID) {
 	revExpected := reverse(expected)
 
 	// Check for loop patterns and remove elements from the slice if necessary.
-	if isLoopPattern(expected, actual) {
+	if hasLoop(expected, actual) {
 		expected = expected[:len(expected)-1]
 		actual = actual[:len(actual)-1]
 		if !checkLoopEdgeIDs(expected, actual) && !checkLoopEdgeIDs(revExpected, actual) {
@@ -167,13 +167,15 @@ func checkLoopEdgeIDs(expected, actual []graph.EdgeID) bool {
 	return true
 }
 
-func isLoopPattern(expected, actual []graph.EdgeID) bool {
+func hasLoop(expected, actual []graph.EdgeID) bool {
 	if len(expected) <= 2 || len(actual) <= 2 {
 		return false
 	}
 	startIdx := 0
 	endIdx := len(expected) - 1
-	return expected[startIdx] == expected[endIdx] && actual[startIdx] == actual[endIdx]
+	hasLoopExpected := expected[startIdx] == expected[endIdx]
+	hasLoopActual := actual[startIdx] == actual[endIdx]
+	return hasLoopExpected && hasLoopActual
 }
 
 func reverse(slice []graph.EdgeID) []graph.EdgeID {
