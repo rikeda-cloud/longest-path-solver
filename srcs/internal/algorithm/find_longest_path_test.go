@@ -25,14 +25,14 @@ func createTests() []struct {
 				{Start: 3, End: 4, Distance: 4.0},
 				{Start: 4, End: 1, Distance: 1.4},
 			},
-			expected: []graph.EdgeID{2, 1, 4, 3, 2},
+			expected: []graph.EdgeID{1, 2, 3, 4, 1},
 		},
 		{
 			graphInputs: []*input.GraphInput{
 				{Start: 1, End: 2, Distance: 1.0},
 				{Start: 1, End: 3, Distance: 2.0},
 			},
-			expected: []graph.EdgeID{3, 1, 2},
+			expected: []graph.EdgeID{1, 3},
 		},
 		{
 			graphInputs: []*input.GraphInput{
@@ -59,8 +59,8 @@ func createTests() []struct {
 				{Start: 3, End: 6, Distance: 1.0},
 				{Start: 3, End: 7, Distance: 1.0},
 				{Start: 4, End: 8, Distance: 1.0},
-				{Start: 4, End: 9, Distance: 5.0},
-				{Start: 5, End: 10, Distance: 5.0},
+				{Start: 4, End: 9, Distance: 1.0},
+				{Start: 5, End: 10, Distance: 1.0},
 				{Start: 5, End: 11, Distance: 1.0},
 				{Start: 6, End: 12, Distance: 1.0},
 				{Start: 6, End: 13, Distance: 1.0},
@@ -68,22 +68,22 @@ func createTests() []struct {
 				{Start: 7, End: 15, Distance: 1.0},
 				{Start: 8, End: 15, Distance: 1.0},
 			},
-			expected: []graph.EdgeID{10, 5, 2, 1, 3, 7, 15, 8, 4, 9},
+			expected: []graph.EdgeID{1, 2, 4, 8, 15},
 		},
 		{
 			graphInputs: []*input.GraphInput{
 				{Start: 1, End: 2, Distance: 1.0},
 				{Start: 1, End: 3, Distance: 1.0},
 				{Start: 1, End: 4, Distance: 1.0},
-				{Start: 1, End: 5, Distance: 2.0},
-				{Start: 1, End: 6, Distance: 2.0},
+				{Start: 1, End: 5, Distance: 1.0},
+				{Start: 1, End: 6, Distance: 1.0},
 				{Start: 1, End: 7, Distance: 1.0},
 				{Start: 2, End: 4, Distance: 1.0},
-				{Start: 2, End: 5, Distance: 1.0},
+				{Start: 2, End: 5, Distance: 2.0},
 				{Start: 3, End: 6, Distance: 1.0},
 				{Start: 3, End: 7, Distance: 1.0},
 			},
-			expected: []graph.EdgeID{4, 2, 5, 1, 6, 3, 7},
+			expected: []graph.EdgeID{1, 2, 5},
 		},
 	}
 	return tests
@@ -121,18 +121,15 @@ func assertEdgeIDs(t *testing.T, expected, actual []graph.EdgeID) {
 		return
 	}
 
-	// Check if slices match (even in reverse order)
-	revExpected := reverse(expected)
-
 	// Check for loop patterns and remove elements from the slice if necessary.
 	if hasLoop(expected, actual) {
 		expected = expected[:len(expected)-1]
 		actual = actual[:len(actual)-1]
-		if !checkLoopEdgeIDs(expected, actual) && !checkLoopEdgeIDs(revExpected, actual) {
+		if !checkLoopEdgeIDs(expected, actual) {
 			t.Errorf("expected: %v, actual: %v", expected, actual)
 		}
 	} else {
-		if !checkEdgeIDs(expected, actual) && !checkEdgeIDs(revExpected, actual) {
+		if !checkEdgeIDs(expected, actual) {
 			t.Errorf("expected: %v, actual: %v", expected, actual)
 		}
 	}
@@ -176,13 +173,4 @@ func hasLoop(expected, actual []graph.EdgeID) bool {
 	hasLoopExpected := expected[startIdx] == expected[endIdx]
 	hasLoopActual := actual[startIdx] == actual[endIdx]
 	return hasLoopExpected && hasLoopActual
-}
-
-func reverse(slice []graph.EdgeID) []graph.EdgeID {
-	reversed := make([]graph.EdgeID, len(slice))
-
-	for i := 0; i < len(slice); i++ {
-		reversed[i] = slice[len(slice)-i-1]
-	}
-	return reversed
 }
