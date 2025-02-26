@@ -18,13 +18,13 @@ func NewGraph() *Graph {
 }
 
 func (g *Graph) Equal(other *Graph) bool {
-	if len(g.GetFromEdgeIDSlice()) != len(other.GetFromEdgeIDSlice()) {
+	if len(g.GetFromEdgeIDs()) != len(other.GetFromEdgeIDs()) {
 		return false
 	}
 
-	for _, fromID := range g.GetFromEdgeIDSlice() {
-		gToIDs := g.GetToEdgeIDSlice(fromID)
-		otherToIDs := other.GetToEdgeIDSlice(fromID)
+	for _, fromID := range g.GetFromEdgeIDs() {
+		gToIDs := g.GetToEdgeIDs(fromID)
+		otherToIDs := other.GetToEdgeIDs(fromID)
 
 		if len(gToIDs) != len(otherToIDs) {
 			return false
@@ -60,19 +60,19 @@ func (g *Graph) FindDistance(fromID, toID EdgeID) (float64, bool) {
 	return 0.0, false
 }
 
-func (g *Graph) GetFromEdgeIDSlice() []EdgeID {
-	fromEdgeIDSlice := make([]EdgeID, 0, len(g.Adj))
+func (g *Graph) GetFromEdgeIDs() []EdgeID {
+	fromEdgeIDs := make([]EdgeID, 0, len(g.Adj))
 	for fromID := range g.Adj {
-		fromEdgeIDSlice = append(fromEdgeIDSlice, fromID)
+		fromEdgeIDs = append(fromEdgeIDs, fromID)
 	}
-	return fromEdgeIDSlice
+	return fromEdgeIDs
 }
 
-func (g *Graph) GetToEdgeIDSlice(fromID EdgeID) []EdgeID {
+func (g *Graph) GetToEdgeIDs(fromID EdgeID) []EdgeID {
 	edges := g.Adj[fromID]
-	toEdgeIDSlice := make([]EdgeID, 0, len(edges))
+	toEdgeIDs := make([]EdgeID, 0, len(edges))
 	for _, edge := range edges {
-		toEdgeIDSlice = append(toEdgeIDSlice, edge.To)
+		toEdgeIDs = append(toEdgeIDs, edge.To)
 	}
-	return toEdgeIDSlice
+	return toEdgeIDs
 }

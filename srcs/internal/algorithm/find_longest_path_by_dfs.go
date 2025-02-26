@@ -8,7 +8,7 @@ func FindLongestPathByDfs(g graph.IGraph) []graph.EdgeID {
 	longestPath := []graph.EdgeID{}
 	maxDistance := 0.0
 
-	for _, startEdgeID := range g.GetFromEdgeIDSlice() {
+	for _, startEdgeID := range g.GetFromEdgeIDs() {
 		path, distance := dfs(g, startEdgeID)
 		if distance > maxDistance {
 			longestPath = path

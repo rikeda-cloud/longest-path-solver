@@ -97,7 +97,7 @@ func TestFindLongestPathGraph(t *testing.T) {
 		for _, test := range tests {
 			g, _ := input.ConvertGraphInputsToGraph(test.graphInputs, graph.NewGraph())
 			result := algorithm(g)
-			assertEdgeIDSlice(t, test.expected, result)
+			assertEdgeIDs(t, test.expected, result)
 		}
 	}
 }
@@ -110,12 +110,12 @@ func TestFindLongestPathMapBasedGraph(t *testing.T) {
 		for _, test := range tests {
 			g, _ := input.ConvertGraphInputsToGraph(test.graphInputs, graph.NewMapBasedGraph())
 			result := algorithm(g)
-			assertEdgeIDSlice(t, test.expected, result)
+			assertEdgeIDs(t, test.expected, result)
 		}
 	}
 }
 
-func assertEdgeIDSlice(t *testing.T, expected, actual []graph.EdgeID) {
+func assertEdgeIDs(t *testing.T, expected, actual []graph.EdgeID) {
 	if len(expected) != len(actual) {
 		t.Errorf("expected length: %d, actual length %d", len(expected), len(actual))
 		return

@@ -25,7 +25,7 @@ func dfs(g graph.IGraph, startEdgeID graph.EdgeID) ([]graph.EdgeID, float64) {
 			continue
 		}
 
-		for _, neighborID := range g.GetToEdgeIDSlice(top.Node) {
+		for _, neighborID := range g.GetToEdgeIDs(top.Node) {
 			if !contains(top.Path, neighborID) || canCreateLoop(top.Path, neighborID) {
 				newPath := make([]graph.EdgeID, len(top.Path)+1)
 				copy(newPath, top.Path)

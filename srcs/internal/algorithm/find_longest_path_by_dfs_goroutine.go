@@ -12,7 +12,7 @@ func FindLongestPathByDfsGoroutine(g graph.IGraph) []graph.EdgeID {
 	var mu sync.Mutex
 	var wg sync.WaitGroup
 
-	for _, startEdgeID := range g.GetFromEdgeIDSlice() {
+	for _, startEdgeID := range g.GetFromEdgeIDs() {
 		wg.Add(1)
 		go func(startEdgeID graph.EdgeID) {
 			defer wg.Done()
