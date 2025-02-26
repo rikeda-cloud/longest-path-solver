@@ -47,7 +47,7 @@ func dfs(g graph.IGraph, startEdgeID graph.EdgeID) ([]graph.EdgeID, float64) {
 }
 
 func isLoop(path []graph.EdgeID, endEdgeID graph.EdgeID) bool {
-	if len(path) <= 2 {
+	if len(path) <= 1 {
 		return false
 	}
 	startEdgeID := path[0]
