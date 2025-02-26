@@ -34,22 +34,15 @@ func (g *MapBasedGraph) Equal(other *MapBasedGraph) bool {
 	return true
 }
 
-func (g *MapBasedGraph) AddEdge(id1, id2 EdgeID, distance float64) error {
-	if _, exist := g.FindDistance(id1, id2); exist {
+func (g *MapBasedGraph) AddEdge(fromID, toID EdgeID, distance float64) error {
+	if _, exist := g.FindDistance(fromID, toID); exist {
 		return errors.New("Duplicate edges")
 	}
 
-	// Adds an edge between id1 and id2 with the given distance,
-	// ensuring both directions are stored for the undirected graph.
-	if g.Adj[id1] == nil {
-		g.Adj[id1] = make(map[EdgeID]float64)
+	if g.Adj[fromID] == nil {
+		g.Adj[fromID] = make(map[EdgeID]float64)
 	}
-	if g.Adj[id2] == nil {
-		g.Adj[id2] = make(map[EdgeID]float64)
-	}
-
-	g.Adj[id1][id2] = distance
-	g.Adj[id2][id1] = distance
+	g.Adj[fromID][toID] = distance
 
 	return nil
 }

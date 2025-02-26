@@ -38,15 +38,12 @@ func (g *Graph) Equal(other *Graph) bool {
 	return true
 }
 
-func (g *Graph) AddEdge(id1, id2 EdgeID, distance float64) error {
-	if _, exist := g.FindDistance(id1, id2); exist {
+func (g *Graph) AddEdge(fromID, toID EdgeID, distance float64) error {
+	if _, exist := g.FindDistance(fromID, toID); exist {
 		return errors.New("Duplicate edges")
 	}
 
-	// Adds an edge between id1 and id2 with the given distance,
-	// ensuring both directions are stored for the undirected graph.
-	g.Adj[id1] = append(g.Adj[id1], Edge{To: id2, Distance: distance})
-	g.Adj[id2] = append(g.Adj[id2], Edge{To: id1, Distance: distance})
+	g.Adj[fromID] = append(g.Adj[fromID], Edge{To: toID, Distance: distance})
 
 	return nil
 }
