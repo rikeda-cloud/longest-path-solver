@@ -27,7 +27,10 @@ func dfs(g graph.IGraph, startEdgeID graph.EdgeID) ([]graph.EdgeID, float64) {
 
 		for _, neighborID := range g.GetToEdgeIDSlice(top.Node) {
 			if !contains(top.Path, neighborID) || canCreateLoop(top.Path, neighborID) {
-				newPath := append([]graph.EdgeID{}, append(top.Path, neighborID)...)
+				newPath := make([]graph.EdgeID, len(top.Path)+1)
+				copy(newPath, top.Path)
+				newPath[len(top.Path)] = neighborID
+
 				distanceToNeighbor, _ := g.FindDistance(top.Node, neighborID)
 				newDistance := top.Distance + distanceToNeighbor
 				s.Push(graph.PathNode{
