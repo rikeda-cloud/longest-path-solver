@@ -13,24 +13,28 @@ func dfs(g graph.IGraph, startEdgeID graph.EdgeID) ([]graph.EdgeID, float64) {
 		Path: []graph.EdgeID{startEdgeID}, Node: startEdgeID, Distance: 0.0,
 	})
 
-	for !s.IsEmpty() {
+	for !s.IsEmpty() { // Continue processing until stack is empty.
 		top, _ := s.Pop()
+		// Update the value if the distance exceeds the maximum distance.
 		if top.Distance > maxDistance {
 			longestPath = top.Path
 			maxDistance = top.Distance
 		}
 
 		// If the start and end points are the same, no further search is performed.
-		if isLoop(top.Path) {
+		if isLoop(top.Path, top.Path[len(top.Path)-1]) {
 			continue
 		}
 
 		for _, neighborID := range g.GetToEdgeIDs(top.Node) {
+			// If it's an unexplored edge or the starting edge, add it to the stack.
 			if !contains(top.Path, neighborID) || canCreateLoop(top.Path, neighborID) {
+				// Create a new path by appending the neighborID to the current path.
 				newPath := make([]graph.EdgeID, len(top.Path)+1)
 				copy(newPath, top.Path)
 				newPath[len(top.Path)] = neighborID
 
+				// Add the distance to the adjacent edge to the total distance.
 				distanceToNeighbor, _ := g.FindDistance(top.Node, neighborID)
 				newDistance := top.Distance + distanceToNeighbor
 				s.Push(graph.PathNode{
@@ -42,23 +46,18 @@ func dfs(g graph.IGraph, startEdgeID graph.EdgeID) ([]graph.EdgeID, float64) {
 	return longestPath, maxDistance
 }
 
-func isLoop(path []graph.EdgeID) bool {
+func isLoop(path []graph.EdgeID, endEdgeID graph.EdgeID) bool {
 	if len(path) <= 2 {
 		return false
 	}
 	startEdgeID := path[0]
-	endEdgeID := path[len(path)-1]
 	return startEdgeID == endEdgeID
 }
 
 func canCreateLoop(path []graph.EdgeID, nextEdgeID graph.EdgeID) bool {
 	// INFO The act of returning with a one-way ticket is against the rules.
 	// INFO It is allowed for the start and end points to be the same due to loops.
-	if len(path) <= 2 {
-		return false
-	}
-	startEdgeID := path[0]
-	return startEdgeID == nextEdgeID
+	return isLoop(path, nextEdgeID)
 }
 
 func contains(path []graph.EdgeID, edgeID graph.EdgeID) bool {
