@@ -7,10 +7,6 @@ import (
 )
 
 func PrintResult(result []graph.EdgeID) {
-	if len(result) <= 1 {
-		return
-	}
-
 	for _, id := range result {
 		fmt.Print(id, "\r\n")
 	}
