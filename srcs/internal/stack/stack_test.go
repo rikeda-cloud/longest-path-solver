@@ -22,29 +22,20 @@ func TestStackOperations(t *testing.T) {
 	}
 
 	poppedItem, ok := s.Pop()
-	if !ok {
-		t.Errorf("Expected Pop to return an item, but it failed")
-	}
-	if poppedItem != item2 {
-		t.Errorf("Expected popped item to be %d, got %d", item2, poppedItem)
+	if !ok || poppedItem != item2 {
+		t.Errorf("Expected popped item to be %d, but got %d", item2, poppedItem)
 	}
 
 	s.Push(item3)
 
 	poppedItem, ok = s.Pop()
-	if !ok {
-		t.Errorf("Expected Pop to return an item, but it failed")
-	}
-	if poppedItem != item3 {
-		t.Errorf("Expected popped item to be %d, %d", item3, poppedItem)
+	if !ok || poppedItem != item3 {
+		t.Errorf("Expected popped item to be %d, but got %d", item3, poppedItem)
 	}
 
 	poppedItem, ok = s.Pop()
-	if !ok {
-		t.Errorf("Expected Pop to return an item, but it failed")
-	}
-	if poppedItem != item1 {
-		t.Errorf("Expected popped item to be %d, %d", item1, poppedItem)
+	if !ok || poppedItem != item1 {
+		t.Errorf("Expected popped item to be %d, but got %d", item1, poppedItem)
 	}
 
 	if !s.IsEmpty() {
