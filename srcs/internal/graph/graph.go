@@ -18,19 +18,19 @@ func NewGraph() *Graph {
 }
 
 func (g *Graph) Equal(other *Graph) bool {
-	if len(g.GetFromEdgeIDs()) != len(other.GetFromEdgeIDs()) {
+	if len(g.Adj) != len(other.Adj) {
 		return false
 	}
 
-	for _, fromID := range g.GetFromEdgeIDs() {
-		gToIDs := g.GetToEdgeIDs(fromID)
-		otherToIDs := other.GetToEdgeIDs(fromID)
+	for fromID, edges := range g.Adj {
+		otherEdges, ok := other.Adj[fromID]
 
-		if len(gToIDs) != len(otherToIDs) {
+		if !ok || len(edges) != len(otherEdges) {
 			return false
 		}
-		for i := range gToIDs {
-			if gToIDs[i] != otherToIDs[i] {
+
+		for i, edge := range edges {
+			if edge.To != otherEdges[i].To || edge.Distance != otherEdges[i].Distance {
 				return false
 			}
 		}
