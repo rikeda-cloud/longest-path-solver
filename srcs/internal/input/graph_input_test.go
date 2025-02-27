@@ -41,6 +41,8 @@ func TestParseGraphInput(t *testing.T) {
 		{input: "1, -2, -+1", expected: nil},
 		{input: "1, -2, --1", expected: nil},
 		{input: "1, -2, ++1", expected: nil},
+		{input: "1, 1, 1.0", expected: nil}, // Start ID and end ID are the same
+		{input: "", expected: nil},
 	}
 
 	for _, test := range tests {

@@ -41,5 +41,9 @@ func ParseGraphInput(line string) (*GraphInput, error) {
 		return nil, fmt.Errorf("start and end must be positive integers: %s", line)
 	}
 
+	if startEdgeID == endEdgeID {
+		return nil, fmt.Errorf("Start and End cannot be the same in line: %s", line)
+	}
+
 	return &GraphInput{Start: startEdgeID, End: endEdgeID, Distance: distance}, nil
 }
