@@ -23,6 +23,10 @@ docker build -t longest-path-solver:latest .
 docker run --rm -i longest-path-solver:latest
 ```
 
+## 動作確認済みプラットフォーム
+- x86_64 Linux
+- aarch64 Linux
+
 ## ファイル構成
 ```
 .
