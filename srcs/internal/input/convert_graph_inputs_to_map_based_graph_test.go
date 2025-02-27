@@ -6,7 +6,7 @@ import (
 	"github.com/rikeda-cloud/longest-path-solver/internal/graph"
 )
 
-func TestConvertGraphInputsToMapBaseGraph(t *testing.T) {
+func TestConvertGraphInputsToMapBasedGraph(t *testing.T) {
 	tests := []struct {
 		graphInputs []*GraphInput
 		expected    *graph.MapBasedGraph

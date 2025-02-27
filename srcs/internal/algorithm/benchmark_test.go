@@ -84,7 +84,7 @@ func BenchmarkFindLongestPathByDfsGoroutine(b *testing.B) {
 	}
 }
 
-func BenchmarkFindLongestPathByDfsMapBaseGraph(b *testing.B) {
+func BenchmarkFindLongestPathByDfsMapBasedGraph(b *testing.B) {
 	g := setupGraph(graph.NewMapBasedGraph())
 	b.ResetTimer()
 
@@ -93,7 +93,7 @@ func BenchmarkFindLongestPathByDfsMapBaseGraph(b *testing.B) {
 	}
 }
 
-func BenchmarkFindLongestPathByDfsGoroutineMapBaseGraph(b *testing.B) {
+func BenchmarkFindLongestPathByDfsGoroutineMapBasedGraph(b *testing.B) {
 	g := setupGraph(graph.NewMapBasedGraph())
 	b.ResetTimer()
 
