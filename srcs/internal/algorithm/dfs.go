@@ -8,8 +8,8 @@ import (
 func dfs(g graph.IGraph, startEdgeID graph.EdgeID) ([]graph.EdgeID, float64) {
 	longestPath := []graph.EdgeID{}
 	maxDistance := 0.0
-	s := stack.NewStack[graph.PathNode]()
-	s.Push(graph.PathNode{
+	s := stack.NewStack[PathNode]()
+	s.Push(PathNode{
 		Path: []graph.EdgeID{startEdgeID}, Node: startEdgeID, Distance: 0.0,
 	})
 
@@ -37,7 +37,7 @@ func dfs(g graph.IGraph, startEdgeID graph.EdgeID) ([]graph.EdgeID, float64) {
 				// Add the distance to the adjacent edge to the total distance.
 				distanceToNeighbor, _ := g.FindDistance(top.Node, neighborID)
 				newDistance := top.Distance + distanceToNeighbor
-				s.Push(graph.PathNode{
+				s.Push(PathNode{
 					Path: newPath, Node: neighborID, Distance: newDistance,
 				})
 			}
