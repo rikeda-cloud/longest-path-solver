@@ -121,10 +121,7 @@ func assertEdgeIDs(t *testing.T, expected, actual []graph.EdgeID) {
 		return
 	}
 
-	// Check for loop patterns and remove elements from the slice if necessary.
 	if hasLoop(expected, actual) {
-		expected = expected[:len(expected)-1]
-		actual = actual[:len(actual)-1]
 		if !checkLoopEdgeIDs(expected, actual) {
 			t.Errorf("expected: %v, actual: %v", expected, actual)
 		}
@@ -145,6 +142,13 @@ func checkEdgeIDs(expected, actual []graph.EdgeID) bool {
 }
 
 func checkLoopEdgeIDs(expected, actual []graph.EdgeID) bool {
+	// Remove the last element and get rid of the loop.
+	expected = expected[:len(expected)-1]
+	actual = actual[:len(actual)-1]
+
+	// Any edge can be asserted as the starting point.
+	// ex) if expected[1,2,3,4,5], actual[3,4,5,1,2] => baseIdx is 3
+	//     if expected[1,2,3], actual[4,5,6] => baseIdx is -1
 	baseIdx := -1
 	for i, val := range actual {
 		if expected[0] == val {
@@ -156,6 +160,8 @@ func checkLoopEdgeIDs(expected, actual []graph.EdgeID) bool {
 		return false
 	}
 
+	// ex) if expected[1,2,3,4,5], actual[3,4,5,1,2] => true
+	//     if expected[1,2,3,4,5], actual[0,1,2,3,4] => false
 	for i := 0; i < len(expected); i++ {
 		if expected[i] != actual[(baseIdx+i)%len(actual)] {
 			return false
@@ -165,6 +171,7 @@ func checkLoopEdgeIDs(expected, actual []graph.EdgeID) bool {
 }
 
 func hasLoop(expected, actual []graph.EdgeID) bool {
+	// Determine if there is a loop in both expected and actual.
 	if len(expected) <= 2 || len(actual) <= 2 {
 		return false
 	}
